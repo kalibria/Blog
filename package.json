@@ -9,8 +9,10 @@
     "astro": "astro",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
+    "db:push": "drizzle-kit push",
     "db:studio": "drizzle-kit studio",
-    "db:test": "tsx test-db.ts"
+    "db:test": "tsx test-db.ts",
+    "db:seed": "tsx seed-db.ts"
   },
   "dependencies": {
     "@astrojs/react": "^4.4.2",
