@@ -3,12 +3,36 @@
   "type": "module",
   "version": "0.0.1",
   "scripts": {
-    "dev": "astro dev",
-    "build": "astro build",
+    "dev": "sst dev",
+    "build": "astro check && astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "db:studio": "drizzle-kit studio",
+    "db:test": "tsx test-db.ts"
   },
   "dependencies": {
-    "astro": "^5.16.6"
+    "@astrojs/react": "^4.4.2",
+    "astro": "^5.16.6",
+    "astro-sst": "3.1.4",
+    "date-fns": "^4.1.0",
+    "dotenv": "^17.2.3",
+    "drizzle-orm": "^0.45.1",
+    "lucide-react": "^0.562.0",
+    "marked": "^17.0.1",
+    "postgres": "^3.4.7",
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3",
+    "slugify": "^1.6.6",
+    "sst": "3.17.25"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.6",
+    "@tsconfig/node18": "^18.2.6",
+    "@types/react": "^19.2.7",
+    "@types/react-dom": "^19.2.3",
+    "drizzle-kit": "^0.31.8",
+    "tsx": "^4.21.0"
   }
 }

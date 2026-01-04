@@ -1,0 +1,1 @@
+ALTER TABLE "articles" ADD COLUMN "description" varchar(500);
