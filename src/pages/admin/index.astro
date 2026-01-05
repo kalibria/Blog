@@ -1,0 +1,86 @@
+---
+import Layout from '../../layouts/Layout.astro';import { ArticlesList } from '../../components/admin/ArticlesList';
+
+const apiUrl = process.env.API_URL || '';
+console.log('API_URL from env:', apiUrl);
+---
+
+<Layout title="Admin Dashboard" description="Manage your blog articles">
+    <header style="margin-bottom: 2rem; border-bottom: 2px solid var(--color-border); padding-bottom: 1rem;">
+      <h1 style="font-size: 2rem; margin-bottom: 0.5rem;">Admin Dashboard</h1>
+      <nav style="margin-top: 1rem;">
+        <a href="/" style="margin-right: 1rem;">← Back to Blog</a>
+        <a href="/admin/new" style="background: var(--color-accent); color: white; padding: 0.5rem 1rem; border-radius: 4px; text-decoration: none;">
+          + New Article
+        </a>
+      </nav>
+    </header>
+
+    <ArticlesList client:load apiUrl={apiUrl}/>
+
+    <style>
+      :global(table) {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 1rem;
+      }
+
+      :global(th), :global(td) {
+        text-align: left;
+        padding: 0.75rem;
+        border-bottom: 1px solid var(--color-border);
+      }
+
+      :global(th) {
+        font-weight: 600;
+        background: #f9f9f9;
+      }
+
+      :global(.status-badge) {
+        display: inline-block;
+        padding: 0.25rem 0.5rem;
+        border-radius: 3px;
+        font-size: 0.85rem;
+        font-weight: 500;
+      }
+
+      :global(.status-published) {
+        background: #d4edda;
+        color: #155724;
+      }
+
+      :global(.status-draft) {
+        background: #fff3cd;
+        color: #856404;
+      }
+
+      :global(.actions) {
+        display: flex;
+        gap: 0.5rem;
+      }
+
+      :global(.btn) {
+        padding: 0.25rem 0.75rem;
+        border-radius: 3px;
+        text-decoration: none;
+        font-size: 0.9rem;
+        border: 1px solid var(--color-border);
+        background: white;
+        cursor: pointer;
+      }
+
+      :global(.btn:hover) {
+        background: #f9f9f9;
+      }
+
+      :global(.btn-danger) {
+        color: #dc3545;
+        border-color: #dc3545;
+      }
+
+      :global(.btn-danger:hover) {
+        background: #dc3545;
+        color: white;
+      }
+    </style>
+  </Layout>
