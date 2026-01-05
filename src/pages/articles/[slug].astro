@@ -1,0 +1,74 @@
+ ---
+  import Layout from '../../layouts/Layout.astro';
+  import { format } from 'date-fns';
+  import { marked } from 'marked';
+  import type { ArticleDetailResponse } from '../../types/article';
+
+  const { slug } = Astro.params;
+
+  const apiUrl = import.meta.env.API_URL;
+  const response = await fetch(`${apiUrl}/articles/${slug}`);
+
+  if (!response.ok) {
+    return Astro.redirect('/404');
+  }
+
+  const data: ArticleDetailResponse = await response.json();
+  const article = data.article;
+
+  const htmlContent = marked(article.content);
+  ---
+
+ <Layout title={article.title} description={article.content.substring(0, 160)}>
+    <nav style="margin-bottom: 2rem;">
+      <a href="/" style="color: #666;">← Back to all articles</a>
+    </nav>
+
+    <article>
+      <header style="margin-bottom: 2rem; border-bottom: 2px solid var(--color-border); padding-bottom: 1rem;">
+        <h1 style="font-size: 2.5rem; margin-bottom: 0.5rem;">{article.title}</h1>
+        <time style="color: #666; font-size: 0.9rem;">
+          {format(new Date(article.createdAt), 'MMMM d, yyyy')}
+        </time>
+      </header>
+
+      <div set:html={htmlContent} style="
+        font-size: 1.1rem;
+        line-height: 1.8;
+      " />
+    </article>
+
+    <style>
+      /* Style the markdown content */
+      article div :global(h1),
+      article div :global(h2),
+      article div :global(h3) {
+        margin-top: 2rem;
+        margin-bottom: 1rem;
+      }
+
+      article div :global(p) {
+        margin-bottom: 1rem;
+      }
+
+      article div :global(code) {
+        background: #f4f4f4;
+        padding: 0.2rem 0.4rem;
+        border-radius: 3px;
+        font-size: 0.9em;
+      }
+
+      article div :global(pre) {
+        background: #f4f4f4;
+        padding: 1rem;
+        border-radius: 5px;
+        overflow-x: auto;
+        margin-bottom: 1rem;
+      }
+
+      article div :global(pre code) {
+        background: none;
+        padding: 0;
+      }
+    </style>
+  </Layout> 
