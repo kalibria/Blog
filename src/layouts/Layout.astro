@@ -1,13 +1,62 @@
-<!doctype html>
-<html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
-	</head>
-	<body>
-		<slot />
-	</body>
-</html>
+ ---
+  interface Props {
+    title?: string;
+    description?: string;
+  }
+
+  const { title = 'My Blog', description = 'A blog built with Astro and SST' } = Astro.props;
+  ---
+
+  <!doctype html>
+  <html lang="en">
+    <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width" />
+      <meta name="description" content={description} />
+      <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+      <meta name="generator" content={Astro.generator} />
+      <title>{title}</title>
+      <style>
+        :root {
+          --color-text: #333;
+          --color-bg: #fff;
+          --color-accent: #0066cc;
+          --color-border: #ddd;
+          --max-width: 800px;
+        }
+
+        * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+        }
+
+        body {
+          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+          line-height: 1.6;
+          color: var(--color-text);
+          background: var(--color-bg);
+          padding: 2rem 1rem;
+        }
+
+        main {
+          max-width: var(--max-width);
+          margin: 0 auto;
+        }
+
+        a {
+          color: var(--color-accent);
+          text-decoration: none;
+        }
+
+        a:hover {
+          text-decoration: underline;
+        }
+      </style>
+    </head>
+    <body>
+      <main>
+        <slot />
+      </main>
+    </body>
+  </html>
