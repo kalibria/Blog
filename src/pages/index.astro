@@ -1,13 +1,25 @@
 ---
   import Layout from '../layouts/Layout.astro';
   import { format } from 'date-fns';
-  import type { Article, ArticlesListResponse } from '../types/article';
+  import type { Article} from '../types/article';
+  import { db } from '../db/index';
+  import { articles } from '../db/schema';
+  import { eq } from 'drizzle-orm';
 
 
-  const apiUrl = import.meta.env.PUBLIC_API_URL || process.env.API_URL;
-  const response = await fetch(`${apiUrl}/articles`);
-  const data: ArticlesListResponse = await response.json();
-  const articles: Article[] = data.articles || [];
+const publishedArticles = await db
+    .select({
+      id: articles.id,
+      title: articles.title,
+      slug: articles.slug,
+      content: articles.content,
+      createdAt: articles.createdAt,
+      updatedAt: articles.updatedAt,
+    })
+    .from(articles)
+    .where(eq(articles.published, true))
+    .orderBy(articles.createdAt);
+  
   ---
 
   <Layout title="My Blog" description="Welcome to my blog built with Astro and SST">
@@ -17,11 +29,11 @@
     </header>
 
     <section>
-      {articles.length === 0 ? (
+      {publishedArticles.length === 0 ? (
         <p style="color: #666;">No articles published yet.</p>
       ) : (
         <div style="display: flex; flex-direction: column; gap: 2rem;">
-          {articles.map((article) => (
+          {publishedArticles.map((article) => (
             <article style="border-bottom: 1px solid var(--color-border); padding-bottom: 2rem;">
               <h2 style="font-size: 1.75rem; margin-bottom: 0.5rem;">
                 <a href={`/articles/${article.slug}`}>{article.title}</a>

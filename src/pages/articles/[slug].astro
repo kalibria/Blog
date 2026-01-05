@@ -2,19 +2,21 @@
   import Layout from '../../layouts/Layout.astro';
   import { format } from 'date-fns';
   import { marked } from 'marked';
-  import type { ArticleDetailResponse } from '../../types/article';
+  import { db } from '../../db/index';
+  import { articles } from '../../db/schema';
+  import { eq } from 'drizzle-orm';
 
   const { slug } = Astro.params;
 
-  const apiUrl = import.meta.env.API_URL;
-  const response = await fetch(`${apiUrl}/articles/${slug}`);
+  const [article] = await db
+    .select()
+    .from(articles)
+    .where(eq(articles.slug, slug))
+    .limit(1);
 
-  if (!response.ok) {
+  if (!article) {
     return Astro.redirect('/404');
   }
-
-  const data: ArticleDetailResponse = await response.json();
-  const article = data.article;
 
   const htmlContent = marked(article.content);
   ---
