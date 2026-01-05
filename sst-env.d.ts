@@ -5,8 +5,12 @@
 
 declare module "sst" {
   export interface Resource {
-    "MyWeb": {
+    "Blog": {
       "type": "sst.aws.Astro"
+      "url": string
+    }
+    "BlogApi": {
+      "type": "sst.aws.ApiGatewayV2"
       "url": string
     }
   }
