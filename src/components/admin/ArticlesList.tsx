@@ -11,6 +11,8 @@
     const [articles, setArticles] = useState<Article[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    const [deletingId, setDeletingId] = useState<string | null>(null);
+    const [deleteSuccess, setDeleteSuccess] = useState<string | null>(null);
 
     useEffect(() => {
       fetchArticles();
@@ -41,7 +43,9 @@
       }
 
       try {
-        const apiUrl = import.meta.env.API_URL;
+        setDeletingId(id);
+        setDeleteSuccess(null);
+
         const response = await fetch(`${apiUrl}/articles/${id}`, {
           method: 'DELETE',
         });
@@ -50,9 +54,17 @@
           throw new Error('Failed to delete article');
         }
 
+        setDeleteSuccess(`"${title}" has been deleted successfully!`);
+
+        setTimeout(() => {
+          setDeleteSuccess(null);
+        }, 3000);
+
         fetchArticles();
       } catch (err) {
         alert('Error deleting article: ' + (err instanceof Error ? err.message : 'Unknown error'));
+      } finally {
+        setDeletingId(null);
       }
     }
 
@@ -69,7 +81,20 @@
     }
 
     return (
-      <table>
+      <>
+        {deleteSuccess && (
+          <div style={{
+            color: '#28a745',
+            background: '#d4edda',
+            padding: '1rem',
+            borderRadius: '4px',
+            marginBottom: '1rem'
+          }}>
+            ✅ {deleteSuccess}
+          </div>
+        )}
+
+        <table>
         <thead>
           <tr>
             <th>Title</th>
@@ -100,8 +125,9 @@
                   <button
                     onClick={() => handleDelete(article.id, article.title)}
                     className="btn btn-danger"
+                    disabled={deletingId === article.id}
                   >
-                    Delete
+                    {deletingId === article.id ? 'Deleting...' : 'Delete'}
                   </button>
                 </div>
               </td>
@@ -109,5 +135,6 @@
           ))}
         </tbody>
       </table>
+      </>
     );
   }
