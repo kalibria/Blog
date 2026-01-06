@@ -3,7 +3,7 @@ import aws from 'astro-sst';
 import react from '@astrojs/react';
 
 export default defineConfig({
-  output: 'server',
+  output: 'static',
   adapter: aws(),
   integrations: [react()]
 });

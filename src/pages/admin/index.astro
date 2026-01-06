@@ -1,8 +1,10 @@
 ---
-import Layout from '../../layouts/Layout.astro';import { ArticlesList } from '../../components/admin/ArticlesList';
+export const prerender = false;
+
+import Layout from '../../layouts/Layout.astro';
+import { ArticlesList } from '../../components/admin/ArticlesList';
 
 const apiUrl = process.env.API_URL || '';
-console.log('API_URL from env:', apiUrl);
 ---
 
 <Layout title="Admin Dashboard" description="Manage your blog articles">

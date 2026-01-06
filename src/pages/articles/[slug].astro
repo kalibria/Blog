@@ -4,19 +4,22 @@
   import { marked } from 'marked';
   import { db } from '../../db/index';
   import { articles } from '../../db/schema';
-  import { eq } from 'drizzle-orm';
+  import { eq, desc } from 'drizzle-orm';
 
-  const { slug } = Astro.params;
+  export async function getStaticPaths() {
+    const allArticles = await db
+      .select()
+      .from(articles)
+      .where(eq(articles.published, true))
+      .orderBy(desc(articles.createdAt));
 
-  const [article] = await db
-    .select()
-    .from(articles)
-    .where(eq(articles.slug, slug))
-    .limit(1);
-
-  if (!article) {
-    return Astro.redirect('/404');
+    return allArticles.map((article) => ({
+      params: { slug: article.slug },
+      props: { article },
+    }));
   }
+
+  const { article } = Astro.props;
 
   const htmlContent = marked(article.content);
   ---

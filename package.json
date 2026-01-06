@@ -4,7 +4,7 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "sst dev",
-    "build": "astro check && astro build",
+    "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
     "db:generate": "drizzle-kit generate",
