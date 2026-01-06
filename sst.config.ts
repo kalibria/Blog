@@ -32,7 +32,7 @@ export default $config({
 
     // Add routes
     api.route("GET /articles", "functions/articles/list.handler");
-    api.route("GET /articles/{slug}", "functions/articles/get.handler");
+    api.route("GET /articles/{id}", "functions/articles/get.handler");
     api.route("POST /articles", "functions/articles/create.handler");
     api.route("PUT /articles/{id}", "functions/articles/update.handler");
     api.route("DELETE /articles/{id}", "functions/articles/delete.handler");

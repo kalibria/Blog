@@ -5,10 +5,14 @@ import { db } from '../../src/db/index';
 
 
   export async function handler(event: APIGatewayProxyEventV2) {
-    try {
-      const slug = event.pathParameters?.slug;
+    console.log('=== GET ARTICLE HANDLER CALLED ===');
+    console.log('Event:', JSON.stringify(event, null, 2));
 
-      if (!slug) {
+    try {
+      const id = event.pathParameters?.id;
+      console.log('Article ID:', id);
+
+      if (!id) {
         return {
           statusCode: 400,
           headers: {
@@ -16,10 +20,12 @@ import { db } from '../../src/db/index';
             'Access-Control-Allow-Origin': '*',
           },
           body: JSON.stringify({
-            error: 'Slug parameter is required',
+            error: 'ID parameter is required',
           }),
         };
       }
+
+      console.log('About to query database for article...');
 
       const [article] = await db
         .select({
@@ -27,12 +33,17 @@ import { db } from '../../src/db/index';
           title: articles.title,
           slug: articles.slug,
           content: articles.content,
+          published: articles.published,
+          authorId: articles.authorId,
           createdAt: articles.createdAt,
-          updatedAt: articles.updatedAt,
+          updatedAt: articles.updatedAt
+
         })
         .from(articles)
-        .where(eq(articles.slug, slug))
+        .where(eq(articles.id, id))
         .limit(1);
+
+      console.log('Query result:', article);
 
       if (!article) {
         return {
@@ -58,7 +69,10 @@ import { db } from '../../src/db/index';
         }),
       };
     } catch (error) {
-      console.error('Error fetching article:', error);
+      console.error('!!! ERROR FETCHING ARTICLE !!!');
+      console.error('Error details:', error);
+      console.error('Error message:', error instanceof Error ? error.message : 'Unknown');
+      console.error('Error stack:', error instanceof Error ? error.stack : 'No stack');
       return {
         statusCode: 500,
         headers: {

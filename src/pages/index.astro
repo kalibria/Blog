@@ -4,7 +4,7 @@
   import type { Article} from '../types/article';
   import { db } from '../db/index';
   import { articles } from '../db/schema';
-  import { eq } from 'drizzle-orm';
+  import { eq, desc } from 'drizzle-orm';
 
 
 const publishedArticles = await db
@@ -18,7 +18,7 @@ const publishedArticles = await db
     })
     .from(articles)
     .where(eq(articles.published, true))
-    .orderBy(articles.createdAt);
+    .orderBy(desc(articles.createdAt));
   
   ---
 

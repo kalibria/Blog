@@ -1,0 +1,124 @@
+ ---
+    export const prerender = false;
+
+    import Layout from '../../../layouts/Layout.astro';
+    import { EditArticleForm } from '../../../components/admin/EditArticleForm';
+
+    const apiUrl = process.env.API_URL || '';
+    const articleId = Astro.params.id;
+---
+
+    <Layout title="Edit Article" description="Edit an existing blog article">
+      <header style="margin-bottom: 2rem;">
+        <a href="/admin" style="color: #666; text-decoration: none;">← Back to Dashboard</a>
+        <h1 style="font-size: 2rem; margin-top: 1rem;">Edit Article</h1>
+      </header>
+
+      <EditArticleForm client:load apiUrl={apiUrl} articleId={articleId || ''} />
+
+      <style>
+        :global(.form-group) {
+          margin-bottom: 1.5rem;
+        }
+
+        :global(.form-label) {
+          display: block;
+          font-weight: 600;
+          margin-bottom: 0.5rem;
+          color: #333;
+        }
+
+        :global(.form-input),
+        :global(.form-textarea) {
+          width: 100%;
+          padding: 0.75rem;
+          border: 1px solid var(--color-border);
+          border-radius: 4px;
+          font-family: inherit;
+          font-size: 1rem;
+        }
+
+        :global(.form-input:focus),
+        :global(.form-textarea:focus) {
+          outline: none;
+          border-color: var(--color-accent);
+          box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
+        }
+
+        :global(.form-textarea) {
+          min-height: 300px;
+          font-family: 'Courier New', monospace;
+          resize: vertical;
+        }
+
+        :global(.form-checkbox) {
+          margin-right: 0.5rem;
+        }
+
+        :global(.form-actions) {
+          display: flex;
+          gap: 1rem;
+          margin-top: 2rem;
+        }
+
+        :global(.btn-primary) {
+          background: var(--color-accent);
+          color: white;
+          padding: 0.75rem 1.5rem;
+          border: none;
+          border-radius: 4px;
+          font-size: 1rem;
+          font-weight: 600;
+          cursor: pointer;
+        }
+
+        :global(.btn-primary:hover) {
+          background: #0052a3;
+        }
+
+        :global(.btn-primary:disabled) {
+          background: #ccc;
+          cursor: not-allowed;
+        }
+
+        :global(.btn-secondary) {
+          background: white;
+          color: #666;
+          padding: 0.75rem 1.5rem;
+          border: 1px solid var(--color-border);
+          border-radius: 4px;
+          font-size: 1rem;
+          cursor: pointer;
+          text-decoration: none;
+          display: inline-block;
+        }
+
+        :global(.btn-secondary:hover) {
+          background: #f9f9f9;
+        }
+
+        :global(.error-message) {
+          color: #dc3545;
+          padding: 1rem;
+          background: #f8d7da;
+          border-radius: 4px;
+          margin-bottom: 1rem;
+        }
+
+        :global(.success-message) {
+          color: #28a745;
+          padding: 1rem;
+          background: #d4edda;
+          border-radius: 4px;
+          margin-bottom: 1rem;
+        }
+
+        :global(.loading-message) {
+          color: #666;
+          padding: 1rem;
+          background: #f9f9f9;
+          border-radius: 4px;
+          margin-bottom: 1rem;
+        }
+      </style>
+    </Layout>
