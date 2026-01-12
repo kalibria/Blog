@@ -1,7 +1,6 @@
 ---
   import Layout from '../layouts/Layout.astro';
   import { format } from 'date-fns';
-  import type { Article} from '../types/article';
   import { db } from '../db/index';
   import { articles } from '../db/schema';
   import { eq, desc } from 'drizzle-orm';
